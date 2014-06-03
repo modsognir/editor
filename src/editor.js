@@ -31,6 +31,10 @@ function Editor(options) {
   // you can customize toolbar with object
   // [{name: 'bold', shortcut: 'Ctrl-B', className: 'icon-bold'}]
 
+  if (options.hasOwnProperty('toolbarContainer')) {
+    options.toolbarContainer = document.getElementById(options.toolbarContainer);
+  }
+
   if (!options.hasOwnProperty('status')) {
     options.status = ['lines', 'words', 'cursor'];
   }
@@ -163,8 +167,13 @@ Editor.prototype.createToolbar = function(items) {
     }
   });
 
-  var cmWrapper = cm.getWrapperElement();
-  cmWrapper.parentNode.insertBefore(bar, cmWrapper);
+  if (this.options.toolbarContainer) {
+    this.options.toolbarContainer.appendChild(bar);
+  } else {
+    var cmWrapper = cm.getWrapperElement();
+    cmWrapper.parentNode.insertBefore(bar, cmWrapper);
+  }
+
   return bar;
 };
 
